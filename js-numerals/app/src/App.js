@@ -17,7 +17,7 @@ const teens = [
 ];
 
 const App = () => {
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = useState("");
 
     const onInput = (e) => {
         setNumber(e.target.value);
@@ -52,22 +52,37 @@ const App = () => {
     };
 
     const toTens = (num) => {
-        if (num < 10) return ones[num];
-        else if (num >= 10 && num < 20) return teens[num - 10];
-        else {
+        if (num < 10) {
+            return ones[num];
+        } else if (num >= 10 && num < 20) {
+            return teens[num - 10];
+        } else {
             return tens[Math.floor(num / 10)] + " " + ones[num % 10];
         }
     };
 
-    const toText = (num) => {
+    const toText = (number) => {
+        if (isNaN(number)) {
+            return <span className="warning">Input can only contain numbers!</span>;
+        } else if (number === 0) {
+            return 0;
+        } else if (!number) {
+            return "...";
+        }
+
+        const num = parseInt(number);
+
         if (num === 0) return "zero";
         else return toMillions(num);
     };
 
     return (
         <div className="App">
-            <input type="number" onChange={onInput} value={number} />
-            <h3>{toText(number)}</h3>
+            <div>
+                <h1>Enter a number below:</h1>
+                <input className="input" onChange={onInput} value={number} />
+                <div className="text">{toText(number)}</div>
+            </div>
         </div>
     );
 };
