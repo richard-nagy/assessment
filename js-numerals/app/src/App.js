@@ -40,14 +40,15 @@ const App = () => {
     };
 
     const toHundreds = (num) => {
+        console.log(num);
         if (num > 99) {
             return (
                 ones[Math.floor(num / 100)] +
                 " hundred " +
-                (num % 100 ? " and " + toTens(num % 100) : "")
+                (num % 100 ? "and " + toTens(num % 100) : "")
             );
         } else {
-            return toTens(num);
+            return "and " + toTens(num);
         }
     };
 
@@ -57,7 +58,7 @@ const App = () => {
         } else if (num >= 10 && num < 20) {
             return teens[num - 10];
         } else {
-            return tens[Math.floor(num / 10)] + " " + ones[num % 10];
+            return tens[Math.floor(num / 10)] + "-" + ones[num % 10];
         }
     };
 
@@ -73,14 +74,26 @@ const App = () => {
         const num = parseInt(number);
 
         if (num === 0) return "zero";
-        else return toMillions(num);
+
+        let result = toMillions(num);
+
+        if (result.startsWith("and ")) {
+            result = result.substring(4);
+        }
+        if (result.endsWith("-")) {
+            result = result.substring(0, result.length - 1);
+        }
+
+        result.replace(/\s\s/g, " ");
+
+        return result;
     };
 
     return (
         <div className="App">
             <div>
                 <h1>Enter a number below:</h1>
-                <input className="input" onChange={onInput} value={number} />
+                <input data-testid="input" className="input" onChange={onInput} value={number} />
                 <div className="text">{toText(number)}</div>
             </div>
         </div>
