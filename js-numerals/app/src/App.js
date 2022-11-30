@@ -40,25 +40,23 @@ const App = () => {
     };
 
     const toHundreds = (num) => {
-        console.log(num);
         if (num > 99) {
-            return (
-                ones[Math.floor(num / 100)] +
-                " hundred " +
-                (num % 100 ? "and " + toTens(num % 100) : "")
-            );
+            return ones[Math.floor(num / 100)] + " hundred " + toTens(num % 100);
         } else {
-            return "and " + toTens(num);
+            return toTens(num);
         }
     };
 
     const toTens = (num) => {
+        if (num < 10 && num > 0) {
+            return " and " + ones[num];
+        }
         if (num < 10) {
-            return ones[num];
+            return "";
         } else if (num >= 10 && num < 20) {
-            return teens[num - 10];
+            return " and " + teens[num - 10];
         } else {
-            return tens[Math.floor(num / 10)] + "-" + ones[num % 10];
+            return " and " + tens[Math.floor(num / 10)] + "-" + ones[num % 10];
         }
     };
 
@@ -72,19 +70,22 @@ const App = () => {
         }
 
         const num = parseInt(number);
-
-        if (num === 0) return "zero";
+        if (number === 0) return "zero";
 
         let result = toMillions(num);
 
-        if (result.startsWith("and ")) {
+        // There might be unnecessary characthers or words left
+        // We filter them out with the code belove
+        if (result.startsWith(" and ")) {
             result = result.substring(4);
         }
         if (result.endsWith("-")) {
             result = result.substring(0, result.length - 1);
         }
-
-        result.replace(/\s\s/g, " ");
+        if (result.endsWith(" and ")) {
+            result = result.substring(0, result.length - 5);
+        }
+        result = result.replace("- ", " ");
 
         return result;
     };
