@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import App from "./App";
 
@@ -12,7 +13,19 @@ test("Check numbers", async () => {
 
     const input = await screen.findAllByTestId(/input/i);
 
-    const numbers = [7, 42, 1999, 2001, 17999, 100001, 342251, 1300420];
+    const numbers = [
+        7,
+        42,
+        1999,
+        2001,
+        17999,
+        100001,
+        342251,
+        1300420,
+        1000000,
+        "001",
+        "hello there",
+    ];
     const texts = [
         "seven",
         "forty-two",
@@ -22,6 +35,9 @@ test("Check numbers", async () => {
         "one hundred thousand and one",
         "three hundred and forty-two thousand two hundred and fifty-one",
         "one million three hundred thousand four hundred and twenty",
+        "one million",
+        "one",
+        "Input can only contain numbers!",
     ];
 
     numbers.forEach((number, i) => {
